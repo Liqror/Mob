@@ -1,5 +1,8 @@
 <resources>
+    <string name="title_notes">Заметки</string>
+    <string name="title_map">Карта</string>
     <string name="app_name">Mob</string>
+
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
