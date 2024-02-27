@@ -6,16 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".LoadingActivity">
 
+<!--    android:layout_width="1180dp"-->
+<!--    android:layout_height="match_parent"-->
+<!--    android:alpha="0.5"-->
+<!--    app:layout_constraintTop_toTopOf="parent"-->
+<!--    app:layout_constraintStart_toStartOf="parent"-->
+<!--    android:adjustViewBounds="true"-->
+<!--    android:scaleType="matrix"-->
+<!--    android:layout_alignParentStart="true"-->
+<!--    android:layout_alignParentTop="true"-->
+
     <ImageView
         android:id="@+id/imageNebo"
-        android:layout_width="1180dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="0.5"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="parent"
+        android:src="@drawable/nebo"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/nebo"
-        tools:layout_editor_absoluteX="-408dp" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"/>
 
     <TextView
         android:id="@+id/textView"
@@ -24,7 +34,6 @@
         android:text="Places to\nvisit"
         android:textSize="50sp"
         android:textColor="@android:color/white"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
