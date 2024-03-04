@@ -34,15 +34,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean addNoteToDatabase(String title, String location) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("title", title);
-        values.put("location", location);
-
-        long newRowId = db.insert("notes", null, values);
-        return newRowId != -1;
-    }
+//    public boolean addNoteToDatabase(String title, String location) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues values = new ContentValues();
+//        values.put("title", title);
+//        values.put("location", location);
+//
+//        long newRowId = db.insert("notes", null, values);
+//        return newRowId != -1;
+//    }
 
 //     Метод для получения всех заметок из базы данных
     public List<Note> getAllNotes() {
@@ -70,8 +70,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 cursor.close();
             }
         }
-
         return notes;
     }
 
+    public boolean deleteNote(int id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        int rowsAffected = db.delete("notes", "id = ?", new String[]{String.valueOf(id)});
+        return rowsAffected > 0;
+    }
+
+
+    // Метод для создания новой заметки
+    public boolean addNoteToDatabase(String title, String location) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("title", title);
+        values.put("location", "Адрес");
+
+        long newRowId = db.insert("notes", null, values);
+        return newRowId != -1;
+    }
 }

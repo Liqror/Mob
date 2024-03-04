@@ -41,30 +41,6 @@ public class NewMainActivity extends AppCompatActivity {
         backButton.setVisibility(View.GONE);
 
         // Обработчики нажатия на кнопки
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Получаем текст из фрагмента WriteFragment
-                WriteFragment writeFragment = (WriteFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-                String title = writeFragment.getEnteredText();
-                String location = "Адрес"; // Значение по умолчанию для location
-
-                // Сохраняем заметку в базу данных
-                DatabaseHelper dbHelper = new DatabaseHelper(NewMainActivity.this);
-                dbHelper.addNoteToDatabase(title, location);
-
-                // Обновляем список заметок в NoteFragment
-                NoteFragment noteFragment = (NoteFragment) getSupportFragmentManager().findFragmentById(R.id.note_fragment);
-                if (noteFragment != null) {
-                    noteFragment.updateNoteList();
-                }
-
-                // Возвращаемся к предыдущему фрагменту или завершаем активность
-                getSupportFragmentManager().popBackStack();
-            }
-        });
-
-        // Обработчики нажатия на кнопки
         notesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,6 +62,7 @@ public class NewMainActivity extends AppCompatActivity {
                 backButton.setVisibility(View.GONE);
             }
         });
+
         plusButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,17 +79,37 @@ public class NewMainActivity extends AppCompatActivity {
                 backButton.setVisibility(View.VISIBLE);
             }
         });
+
+
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Заменяем текущий фрагмент на фрагмент "write"
-                replaceFragment(new NoteFragment());
+                // Получаем текст из фрагмента WriteFragment
+                WriteFragment writeFragment = (WriteFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                String title = writeFragment.getEnteredText();
+                String location = "Адрес"; // Значение по умолчанию для location
+
+                // Сохраняем заметку в базу данных
+                DatabaseHelper dbHelper = new DatabaseHelper(NewMainActivity.this);
+                dbHelper.addNoteToDatabase(title, location);
+
+                // Обновляем список заметок в NoteFragment
+                NoteFragment noteFragment = (NoteFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+                if (noteFragment != null) {
+                    noteFragment.updateNoteList();
+                }
+
+                // Возвращаемся к предыдущему фрагменту или завершаем активность
+                getSupportFragmentManager().popBackStack();
 
                 // Показываем кнопку при отображении фрагмента NoteFragment
                 plusButton.setVisibility(View.VISIBLE);
 
                 // Скрываем кнопку
                 backButton.setVisibility(View.GONE);
+
+                // Заменяем текущий фрагмент на фрагмент "write"
+                replaceFragment(new NoteFragment());
             }
         });
     }
@@ -124,28 +121,5 @@ public class NewMainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.fragment_container, fragment);
         fragmentTransaction.commit();
     }
-
-
-//    @Override
-//    public void onBackPressed() {
-//        // Проверяем, что текущий фрагмент - WriteFragment
-//        Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-//        if (currentFragment instanceof WriteFragment) {
-//            WriteFragment writeFragment = (WriteFragment) currentFragment;
-//            String title = writeFragment.getEnteredText();
-//            String location = "Адрес"; // Значение по умолчанию для location
-//
-//            // Сохранение заметки в базе данных
-//            DatabaseHelper dbHelper = new DatabaseHelper(this);
-//            dbHelper.addNoteToDatabase(title, location);
-//
-//            // Обновление списка заметок в NoteFragment
-//            NoteFragment noteFragment = (NoteFragment) getSupportFragmentManager().findFragmentById(R.id.note_fragment);
-//            if (noteFragment != null) {
-//                noteFragment.updateNoteList();
-//            }
-//        }
-//        super.onBackPressed();
-//    }
 
 }

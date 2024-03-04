@@ -51,8 +51,12 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Действия при нажатии на кнопку удаления
-                // Здесь можно удалить заметку из списка и обновить адаптер
+                if (mListener != null) {
+                    int position = holder.getAdapterPosition();
+                    if (position != RecyclerView.NO_POSITION) {
+                        mListener.onDeleteClick(position);
+                    }
+                }
             }
         });
     }
@@ -61,4 +65,20 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
     public int getItemCount() {
         return notesList.size();
     }
+
+    public void removeItem(int position) {
+        notesList.remove(position);
+        notifyItemRemoved(position);
+    }
+
+    public interface OnItemClickListener {
+        void onDeleteClick(int position);
+    }
+
+    private OnItemClickListener mListener;
+
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
+
 }

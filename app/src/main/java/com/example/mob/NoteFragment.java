@@ -1,6 +1,5 @@
 package com.example.mob;
 
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,23 +37,50 @@ public class NoteFragment extends Fragment {
         adapter = new NotesAdapter(notesList);
         recyclerView.setAdapter(adapter);
 
-        // Добавляем тестовые данные заметок
-        notesList.add(new Note("Note 1", "Location 1"));
-        notesList.add(new Note("Note 2", "Location 2"));
+        // Обработчик нажатия на кнопку удаления
+        adapter.setOnItemClickListener(new NotesAdapter.OnItemClickListener() {
+            @Override
+            public void onDeleteClick(int position) {
+                removeItemWithAnimation(position);
+            }
+        });
 
+        // Инициализируем DatabaseHelper
+        dbHelper = new DatabaseHelper(getContext());
 
-        // Уведомляем адаптер об изменениях
-        adapter.notifyDataSetChanged();
+        // Загружаем данные из базы данных и обновляем список заметок
+        updateNoteList();
 
         return view;
     }
 
     public void updateNoteList() {
-        // Здесь вы можете выполнить обновление вашего RecyclerView или ListView
-        // Загрузить данные из базы данных и установить их в адаптер вашего списка заметок
-        // Например, если вы используете RecyclerView:
-        List<Note> notes = dbHelper.getAllNotes(); // Метод для загрузки всех заметок из базы данных
-        adapter.setNotes(notes); // Установить загруженные заметки в адаптер
-        adapter.notifyDataSetChanged(); // Уведомить адаптер о том, что данные были изменены
+        // Получаем все заметки из базы данных
+        List<Note> notes = dbHelper.getAllNotes();
+
+        // Удаляем все элементы из списка заметок
+        notesList.clear();
+
+        // Добавляем все заметки из базы данных в список
+        notesList.addAll(notes);
+
+        // Уведомляем адаптер о конкретных изменениях
+        adapter.notifyDataSetChanged();
+    }
+
+    private void removeItemWithAnimation(int position) {
+        // Получаем элемент из списка заметок
+        Note removedNote = notesList.get(position);
+
+        // Удаляем элемент из базы данных
+        boolean isDeleted = dbHelper.deleteNote(removedNote.getId());
+
+        if (isDeleted) {
+            // Удаляем элемент из списка с анимацией
+            adapter.removeItem(position);
+        } else {
+            // Обработка ошибки удаления элемента
+            Toast.makeText(getContext(), "Ошибка при удалении заметки", Toast.LENGTH_SHORT).show();
+        }
     }
 }
