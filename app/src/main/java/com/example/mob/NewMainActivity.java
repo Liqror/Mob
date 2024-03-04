@@ -94,10 +94,12 @@ public class NewMainActivity extends AppCompatActivity {
                 dbHelper.addNoteToDatabase(title, location);
 
                 // Обновляем список заметок в NoteFragment
-                NoteFragment noteFragment = (NoteFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-                if (noteFragment != null) {
-                    noteFragment.updateNoteList();
-                }
+//                NoteFragment noteFragment = (NoteFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+//                if (noteFragment != null) {
+//                    noteFragment.updateNoteList();
+//                }
+                NoteFragment noteFragment = new NoteFragment();
+                replaceFragment(noteFragment);
 
                 // Возвращаемся к предыдущему фрагменту или завершаем активность
                 getSupportFragmentManager().popBackStack();
@@ -107,9 +109,6 @@ public class NewMainActivity extends AppCompatActivity {
 
                 // Скрываем кнопку
                 backButton.setVisibility(View.GONE);
-
-                // Заменяем текущий фрагмент на фрагмент "write"
-                replaceFragment(new NoteFragment());
             }
         });
     }

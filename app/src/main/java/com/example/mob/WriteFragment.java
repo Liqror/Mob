@@ -6,8 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.annotation.Nullable;
 
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,11 +16,12 @@ public class WriteFragment extends Fragment {
 
     private LinedEditText linedEditText;
 
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_write, container, false);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_write, container, false);
+        linedEditText = view.findViewById(R.id.edittxt_multilines);
+        return view;
     }
 
     // В WriteFragment добавьте обработчик для поля ввода текста
@@ -34,13 +33,13 @@ public class WriteFragment extends Fragment {
 
     }
 
-
     // Метод для получения введенного текста из LinedEditText
     public String getEnteredText() {
-        if (linedEditText != null) {
+        if (linedEditText != null && linedEditText.getText() != null) {
             return linedEditText.getText().toString();
         } else {
-            return ""; // Возвращаем пустую строку, если linedEditText не инициализирован
+            return "НЕ НАШЕЛ ТЕКСТ";
+            // Возвращаем пустую строку, если linedEditText не инициализирован
         }
     }
 }
