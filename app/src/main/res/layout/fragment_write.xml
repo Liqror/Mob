@@ -7,26 +7,34 @@
     android:background="@color/light_blue"
     tools:context=".WriteFragment">
 
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
 
-            <com.example.mob.LinedEditText
-                android:id="@+id/edittxt_multilines"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ems="10"
-                android:minLines="1"
-                android:inputType="textMultiLine"
-                android:minHeight="48dp"
-                android:scrollbars="vertical"/>
-
+        <com.example.mob.LinedEditText
+            android:id="@+id/edittxt_multilines"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/inf_layout"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            android:minHeight="20dp"
+            android:minLines="1"
+            android:scrollbars="vertical"
+            android:gravity="top|left"
+            android:textCursorDrawable="@null"
+            android:textColorHighlight="@null"
+            android:textColorLink="@null"
+            />
 
         <RelativeLayout
+            android:id="@+id/inf_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+
             >
             <LinearLayout
                 android:id="@+id/geo_layout"
@@ -50,7 +58,7 @@
                     android:layout_gravity="center_vertical"
                     android:text="Геопозиция"
                     android:textColor="#FFFFFF"
-                    android:textSize="40dp" />
+                    android:textSize="30dp" />
 
             </LinearLayout>
 
@@ -73,7 +81,7 @@
                 android:layout_below="@id/geo_layout"
                 android:text="Адрес"
                 android:textColor="#FFFFFF"
-                android:textSize="30dp"
+                android:textSize="25dp"
                 android:layout_marginLeft="10dp"/>
 
 
@@ -100,7 +108,7 @@
                     android:layout_gravity="center_vertical"
                     android:text="Погода"
                     android:textColor="#FFFFFF"
-                    android:textSize="40dp" />
+                    android:textSize="30dp" />
 
             </LinearLayout>
 
@@ -112,9 +120,11 @@
                 android:layout_below="@id/weather_layout"
                 android:text="+10, облачно"
                 android:textColor="#FFFFFF"
-                android:textSize="30dp"
+                android:textSize="25dp"
                 android:layout_marginLeft="10dp"/>
 
         </RelativeLayout>
+
     </RelativeLayout>
+
 </FrameLayout>

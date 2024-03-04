@@ -5,80 +5,88 @@
     android:layout_height="match_parent"
     tools:context=".NoteFragment">
 
-    <ScrollView
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/note_fragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="16dp"
-        >
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        android:clipToPadding="false" />
 
-        <RelativeLayout
-            android:id="@+id/note_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:background="@drawable/rounded_background"
-            android:paddingStart="16dp"
-            android:paddingTop="16dp"
-            android:paddingEnd="16dp"
-            android:paddingBottom="16dp"
-            >
+<!--    <ScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:paddingBottom="16dp"-->
+<!--        >-->
 
-            <!-- Название/первая строчка заметки -->
-            <TextView
-                android:id="@+id/name_note"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Заехать к Нине в гости"
-                android:textSize="20sp"
-                android:textColor="@color/black"
-                />
+<!--        <RelativeLayout-->
+<!--            android:id="@+id/note_layout"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginStart="20dp"-->
+<!--            android:layout_marginTop="20dp"-->
+<!--            android:layout_marginEnd="20dp"-->
+<!--            android:background="@drawable/rounded_background"-->
+<!--            android:paddingStart="16dp"-->
+<!--            android:paddingTop="16dp"-->
+<!--            android:paddingEnd="16dp"-->
+<!--            android:paddingBottom="16dp"-->
+<!--            >-->
 
-            <!-- картинка и вторая надпись -->
-            <LinearLayout
-                android:id="@+id/location_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_below="@id/name_note"
-                android:layout_marginTop="8dp">
+<!--            &lt;!&ndash; Название/первая строчка заметки &ndash;&gt;-->
+<!--            <TextView-->
+<!--                android:id="@+id/name_note"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="Заехать к Нине в гости"-->
+<!--                android:textSize="20sp"-->
+<!--                android:textColor="@color/black"-->
+<!--                />-->
 
-                <!-- Картинка -->
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_note_map"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="4dp"
-                    android:contentDescription="note_map" />
+<!--            &lt;!&ndash; картинка и вторая надпись &ndash;&gt;-->
+<!--            <LinearLayout-->
+<!--                android:id="@+id/location_layout"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:layout_below="@id/name_note"-->
+<!--                android:layout_marginTop="8dp">-->
 
-                <!-- Локация текстом-->
-                <TextView
-                    android:id="@+id/location_note"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Лондон, Канада"
-                    android:textSize="16sp"
-                    android:textColor="@color/white"
-                    android:layout_gravity="center_vertical"/>
+<!--                &lt;!&ndash; Картинка &ndash;&gt;-->
+<!--                <ImageView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:src="@drawable/ic_note_map"-->
+<!--                    android:layout_gravity="center_vertical"-->
+<!--                    android:layout_marginEnd="4dp"-->
+<!--                    android:contentDescription="note_map" />-->
 
-            </LinearLayout>
+<!--                &lt;!&ndash; Локация текстом&ndash;&gt;-->
+<!--                <TextView-->
+<!--                    android:id="@+id/location_note"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Лондон, Канада"-->
+<!--                    android:textSize="16sp"-->
+<!--                    android:textColor="@color/white"-->
+<!--                    android:layout_gravity="center_vertical"/>-->
+
+<!--            </LinearLayout>-->
 
 
-            <!-- Мусорка -->
-            <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:src="@drawable/ic_trash_light"
-                android:background="@null"
-                android:layout_alignParentEnd="true"
-                android:layout_centerHorizontal="true"
-                android:contentDescription="Кнопка мусорка"/>
+<!--            &lt;!&ndash; Мусорка &ndash;&gt;-->
+<!--            <ImageButton-->
+<!--                android:id="@+id/imageButton"-->
+<!--                android:layout_width="48dp"-->
+<!--                android:layout_height="48dp"-->
+<!--                android:src="@drawable/ic_trash_light"-->
+<!--                android:background="@null"-->
+<!--                android:layout_alignParentEnd="true"-->
+<!--                android:layout_centerHorizontal="true"-->
+<!--                android:contentDescription="Кнопка мусорка"/>-->
 
-        </RelativeLayout>
+<!--        </RelativeLayout>-->
 
-    </ScrollView>
+<!--    </ScrollView>-->
 
 </FrameLayout>
