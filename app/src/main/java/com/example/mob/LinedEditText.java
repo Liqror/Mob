@@ -20,9 +20,9 @@ public class LinedEditText extends androidx.appcompat.widget.AppCompatEditText {
         mRect = new Rect();
         mPaint = new Paint();
         mPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-        // Задаем цвет текста (например, красный)
+        // Задаем цвет текста
         mPaint.setColor(getResources().getColor(R.color.blue));
-        // Задаем размер текста (например, 20dp)
+        // Задаем размер текста
         setTextSize(25);
     }
 

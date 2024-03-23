@@ -1,5 +1,6 @@
 package com.example.mob;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,25 +23,39 @@ public class WriteFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_write, container, false);
         linedEditText = view.findViewById(R.id.edittxt_multilines);
 
-        // Получаем переданные данные о заметке
-        Bundle bundle = getArguments();
-        if (bundle != null) {
-            int noteId = bundle.getInt("note_id");
-            String noteTitle = bundle.getString("note_title");
+        Bundle args = getArguments();
+        if (args != null) {
+            int noteId = args.getInt("note_id", -1);
+            String noteTitle = args.getString("note_title");
 
             // Заполняем поля данными заметки
             EditText titleEditText = view.findViewById(R.id.edittxt_multilines);
             titleEditText.setText(noteTitle);
+
+            if (noteId != -1) {
+                NewMainActivity activity = (NewMainActivity) getActivity();
+                if (activity != null) {
+                    activity.setNoteId(noteId);
+                }
+                // Идентификатор заметки был передан, это означает, что редактируется существующая заметка
+            } else {
+                // Идентификатор заметки не был передан, это означает, что создается новая заметка
+                NewMainActivity activity = (NewMainActivity) getActivity();
+                if (activity != null) {
+                    activity.setIsNewNote(true);
+                }
+            }
         }
 
-        // Получаем данные заметки из аргументов
+        // Получаем переданные данные о заметке РАБОТАЕТ
 //        Bundle bundle = getArguments();
 //        if (bundle != null) {
 //            int noteId = bundle.getInt("note_id");
 //            String noteTitle = bundle.getString("note_title");
 //
 //            // Заполняем поля данными заметки
-//            fillNoteData(noteId, noteTitle);
+//            EditText titleEditText = view.findViewById(R.id.edittxt_multilines);
+//            titleEditText.setText(noteTitle);
 //        }
 
         return view;

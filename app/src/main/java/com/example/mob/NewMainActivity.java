@@ -22,6 +22,8 @@ public class NewMainActivity extends AppCompatActivity {
     private Button mapButton;
     private ImageButton plusButton;
     private ImageButton backButton;
+    private boolean isNewNote = false; // Флаг для определения режима работы
+    private int noteId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +49,7 @@ public class NewMainActivity extends AppCompatActivity {
                 replaceFragment(new NoteFragment());
                 // Показываем кнопку при отображении фрагмента NoteFragment
                 plusButton.setVisibility(View.VISIBLE);
+                isNewNote = false;
             }
         });
 
@@ -60,6 +63,7 @@ public class NewMainActivity extends AppCompatActivity {
 
                 // Скрываем кнопку
                 backButton.setVisibility(View.GONE);
+                isNewNote = false;
             }
         });
 
@@ -77,6 +81,7 @@ public class NewMainActivity extends AppCompatActivity {
 
                 // Показываем кнопку при отображении фрагмента NoteFragment
                 backButton.setVisibility(View.VISIBLE);
+                isNewNote = true;
             }
         });
 
@@ -91,18 +96,19 @@ public class NewMainActivity extends AppCompatActivity {
 
                 // Сохраняем заметку в базу данных
                 DatabaseHelper dbHelper = new DatabaseHelper(NewMainActivity.this);
-                dbHelper.addNoteToDatabase(title, location);
+                if (isNewNote) {
+                    // Если создается новая заметка, добавьте ее в базу данных
+                    dbHelper.addNoteToDatabase(title, location);
+                } else {
+                    // Если редактируется существующая заметка, обновите ее в базе данных
+                    dbHelper.updateNoteInDatabase(noteId, title, location);
+                }
 
-                // Обновляем список заметок в NoteFragment
-//                NoteFragment noteFragment = (NoteFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
-//                if (noteFragment != null) {
-//                    noteFragment.updateNoteList();
-//                }
+                // Очищаем флаг после завершения действия
+                isNewNote = false;
+
                 NoteFragment noteFragment = new NoteFragment();
                 replaceFragment(noteFragment);
-
-                // Возвращаемся к предыдущему фрагменту или завершаем активность
-//                getSupportFragmentManager().popBackStack();
 
                 // Показываем кнопку при отображении фрагмента NoteFragment
                 plusButton.setVisibility(View.VISIBLE);
@@ -112,6 +118,15 @@ public class NewMainActivity extends AppCompatActivity {
             }
         });
     }
+
+    // Метод для получения значения переменной isNewNote
+    public void setIsNewNote(boolean value) {
+        isNewNote = value;
+    }
+    public void setNoteId(int value) {
+        noteId = value;
+    }
+
 
     // Метод для замены фрагмента
     private void replaceFragment(Fragment fragment) {
