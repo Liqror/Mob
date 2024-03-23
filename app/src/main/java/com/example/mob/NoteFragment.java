@@ -3,6 +3,7 @@ package com.example.mob;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,6 +43,33 @@ public class NoteFragment extends Fragment {
             @Override
             public void onDeleteClick(int position) {
                 removeItemWithAnimation(position);
+            }
+
+            @Override
+            public void onItemClick(int position) {
+                // Получаем выбранную заметку
+                Note selectedNote = notesList.get(position);
+
+                // Создаем новый экземпляр WriteFragment
+                WriteFragment writeFragment = new WriteFragment();
+
+                // Передаем данные выбранной заметки в WriteFragment
+                Bundle bundle = new Bundle();
+                bundle.putInt("note_id", selectedNote.getId());
+                bundle.putString("note_title", selectedNote.getTitle());
+//                bundle.putString("note_location", selectedNote.getLocation());
+                writeFragment.setArguments(bundle);
+
+                // Получаем ссылку на MainActivity
+                NewMainActivity mainActivity = (NewMainActivity) getActivity();
+                // Скрываем кнопки в MainActivity
+                mainActivity.hideButtonForWrite();
+
+                // Заменяем текущий фрагмент на WriteFragment
+                FragmentTransaction transaction = getParentFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, writeFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
             }
         });
 

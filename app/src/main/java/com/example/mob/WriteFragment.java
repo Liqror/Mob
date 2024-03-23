@@ -21,6 +21,28 @@ public class WriteFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_write, container, false);
         linedEditText = view.findViewById(R.id.edittxt_multilines);
+
+        // Получаем переданные данные о заметке
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            int noteId = bundle.getInt("note_id");
+            String noteTitle = bundle.getString("note_title");
+
+            // Заполняем поля данными заметки
+            EditText titleEditText = view.findViewById(R.id.edittxt_multilines);
+            titleEditText.setText(noteTitle);
+        }
+
+        // Получаем данные заметки из аргументов
+//        Bundle bundle = getArguments();
+//        if (bundle != null) {
+//            int noteId = bundle.getInt("note_id");
+//            String noteTitle = bundle.getString("note_title");
+//
+//            // Заполняем поля данными заметки
+//            fillNoteData(noteId, noteTitle);
+//        }
+
         return view;
     }
 
@@ -42,4 +64,13 @@ public class WriteFragment extends Fragment {
             // Возвращаем пустую строку, если linedEditText не инициализирован
         }
     }
+
+    public void fillNoteData(int noteId, String title) {
+        // Заполняем поля данными заметки
+        EditText editText = getView().findViewById(R.id.edittxt_multilines);
+        editText.setText(title);
+
+        // Добавьте заполнение других полей заметки (если есть)
+    }
+
 }

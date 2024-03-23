@@ -102,7 +102,7 @@ public class NewMainActivity extends AppCompatActivity {
                 replaceFragment(noteFragment);
 
                 // Возвращаемся к предыдущему фрагменту или завершаем активность
-                getSupportFragmentManager().popBackStack();
+//                getSupportFragmentManager().popBackStack();
 
                 // Показываем кнопку при отображении фрагмента NoteFragment
                 plusButton.setVisibility(View.VISIBLE);
@@ -120,5 +120,12 @@ public class NewMainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.fragment_container, fragment);
         fragmentTransaction.commit();
     }
+
+    public void hideButtonForWrite() {
+        plusButton.setVisibility(View.GONE);
+        backButton.setVisibility(View.VISIBLE);
+        // Скрыть другие кнопки по аналогии
+    }
+
 
 }

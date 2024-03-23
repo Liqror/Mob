@@ -48,6 +48,20 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
         Note note = notesList.get(position);
         holder.titleTextView.setText(note.getTitle());
         holder.locationTextView.setText(note.getLocation());
+
+        // Добавляем обработчик клика для элемента списка
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mListener != null) {
+                    int clickedPosition = holder.getAdapterPosition();
+                    if (clickedPosition != RecyclerView.NO_POSITION) {
+                        mListener.onItemClick(clickedPosition);
+                    }
+                }
+            }
+        });
+
         holder.deleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -73,6 +87,7 @@ public class NotesAdapter extends RecyclerView.Adapter<NotesAdapter.NoteViewHold
 
     public interface OnItemClickListener {
         void onDeleteClick(int position);
+        void onItemClick(int position);
     }
 
     private OnItemClickListener mListener;
