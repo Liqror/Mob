@@ -63,16 +63,6 @@
             </LinearLayout>
 
 
-            <ImageButton
-                android:id="@+id/btn_re"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignTop="@id/geo_layout"
-                android:layout_alignParentEnd="true"
-                android:background="@null"
-                android:src="@drawable/ic_note_re" />
-
-
             <TextView
                 android:id="@+id/geo_text"
                 android:layout_width="wrap_content"
@@ -111,6 +101,15 @@
                     android:textSize="30dp" />
 
             </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/btn_re"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/weather_layout"
+                android:layout_alignParentEnd="true"
+                android:background="@null"
+                android:src="@drawable/ic_note_re" />
 
             <TextView
                 android:id="@+id/weather_text"

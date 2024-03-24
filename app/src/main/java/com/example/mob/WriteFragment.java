@@ -1,6 +1,7 @@
 package com.example.mob;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -10,18 +11,47 @@ import androidx.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.EditText;
 
 
 public class WriteFragment extends Fragment {
 
     private LinedEditText linedEditText;
+    private boolean isKeyboardShowing = false;
+    private View infLayout;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_write, container, false);
         linedEditText = view.findViewById(R.id.edittxt_multilines);
+        infLayout = view.findViewById(R.id.inf_layout);
+
+        // Добавляем слушатель для отслеживания видимости клавиатуры
+        view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                view.getWindowVisibleDisplayFrame(r);
+                int screenHeight = view.getRootView().getHeight();
+                int keypadHeight = screenHeight - r.bottom;
+
+                if (keypadHeight > screenHeight * 0.15) {
+                    // Клавиатура открыта
+                    if (!isKeyboardShowing) {
+                        isKeyboardShowing = true;
+                        onKeyboardVisibilityChanged(true);
+                    }
+                } else {
+                    // Клавиатура закрыта
+                    if (isKeyboardShowing) {
+                        isKeyboardShowing = false;
+                        onKeyboardVisibilityChanged(false);
+                    }
+                }
+            }
+        });
 
         Bundle args = getArguments();
         if (args != null) {
@@ -46,28 +76,23 @@ public class WriteFragment extends Fragment {
                 }
             }
         }
-
-        // Получаем переданные данные о заметке РАБОТАЕТ
-//        Bundle bundle = getArguments();
-//        if (bundle != null) {
-//            int noteId = bundle.getInt("note_id");
-//            String noteTitle = bundle.getString("note_title");
-//
-//            // Заполняем поля данными заметки
-//            EditText titleEditText = view.findViewById(R.id.edittxt_multilines);
-//            titleEditText.setText(noteTitle);
-//        }
-
         return view;
     }
 
-    // В WriteFragment добавьте обработчик для поля ввода текста
+    // Метод для обработки изменений видимости клавиатуры
+    private void onKeyboardVisibilityChanged(boolean opened) {
+        if (opened) {
+            // Клавиатура открыта, скрываем блок inf_layout
+            infLayout.setVisibility(View.GONE);
+        } else {
+            // Клавиатура закрыта, показываем блок inf_layout
+            infLayout.setVisibility(View.VISIBLE);
+        }
+    }
+
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
-        EditText editText = view.findViewById(R.id.edittxt_multilines);
-
     }
 
     // Метод для получения введенного текста из LinedEditText
@@ -87,5 +112,4 @@ public class WriteFragment extends Fragment {
 
         // Добавьте заполнение других полей заметки (если есть)
     }
-
 }
