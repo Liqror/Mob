@@ -26,32 +26,6 @@ public class LinedEditText extends androidx.appcompat.widget.AppCompatEditText {
         setTextSize(25);
     }
 
-//    @Override
-//    protected void onDraw(Canvas canvas) {
-//        //int count = getLineCount();
-//
-//        int height = getHeight();
-//        int line_height = getLineHeight();
-//
-//        int count = height / line_height;
-//
-//        if (getLineCount() > count)
-//            count = getLineCount();//for long text with scrolling
-//
-//        Rect r = mRect;
-//        Paint paint = mPaint;
-//        int baseline = getLineBounds(0, r);//first line
-//
-//        for (int i = 0; i < count; i++) {
-//
-//            canvas.drawLine(r.left, baseline + 1, r.right, baseline + 1, paint);
-//            baseline += getLineHeight();//next line
-//        }
-//
-//        super.onDraw(canvas);
-//    }
-
-
     @Override
     protected void onDraw(Canvas canvas) {
         int height = getHeight();

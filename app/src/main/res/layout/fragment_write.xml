@@ -15,6 +15,7 @@
 
         <com.example.mob.LinedEditText
             android:id="@+id/edittxt_multilines"
+            android:background="@null"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/inf_layout"
