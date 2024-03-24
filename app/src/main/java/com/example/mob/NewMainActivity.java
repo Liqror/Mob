@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class NewMainActivity extends AppCompatActivity {
     private ImageButton backButton;
     private boolean isNewNote = false; // Флаг для определения режима работы
     private int noteId;
+    TextView titleTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +37,10 @@ public class NewMainActivity extends AppCompatActivity {
         mapButton = findViewById(R.id.map_button);
         plusButton = findViewById(R.id.btn_plus);
         backButton = findViewById(R.id.btn_back);
+        titleTextView = findViewById(R.id.title_map_note);
+
+        // Установите начальный текст
+        titleTextView.setText(getString(R.string.title_notes));
 
         // Устанавливаем начальный фрагмент
         replaceFragment(new NoteFragment());
@@ -47,6 +53,7 @@ public class NewMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 replaceFragment(new NoteFragment());
+                titleTextView.setText(getString(R.string.title_notes));
                 // Показываем кнопку при отображении фрагмента NoteFragment
                 plusButton.setVisibility(View.VISIBLE);
                 isNewNote = false;
@@ -57,6 +64,7 @@ public class NewMainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 replaceFragment(new MapFragment());
+                titleTextView.setText(getString(R.string.title_map));
 
                 // Скрываем кнопку
                 plusButton.setVisibility(View.GONE);
