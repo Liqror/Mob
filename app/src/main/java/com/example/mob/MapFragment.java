@@ -29,9 +29,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     public static final int MODE_VIEW = 1; // Режим просмотра
     public static final int MODE_EDIT = 2; // Режим редактирования
     private int currentMode = MODE_VIEW; // По умолчанию
-
+    private MarkerOptions currentMarker;
     private GoogleMap mMap;
-    private int markerCount = 0; // Счетчик для подсчета маркеров
+
 
     @Nullable
     @Override
@@ -75,6 +75,9 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     @Override
     public void onMapClick(LatLng point) {
         // Действия при клике на карту в режиме редактирования
+        if (currentMarker != null) {
+            mMap.clear(); // Удаляем все маркеры с карты
+        }
         new FetchAddressTask().execute(point);
     }
 
@@ -104,8 +107,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         @Override
         protected void onPostExecute(String address) {
             if (!address.isEmpty()) {
-                mMap.addMarker(new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).title(address));
-            }
+                currentMarker = new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).title(address);
+                mMap.addMarker(currentMarker);}
         }
     }
 

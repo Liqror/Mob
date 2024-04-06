@@ -59,6 +59,7 @@ public class NewMainActivity extends AppCompatActivity {
                 titleTextView.setText(getString(R.string.title_notes));
                 // Показываем кнопку при отображении фрагмента NoteFragment
                 plusButton.setVisibility(View.VISIBLE);
+                tickButton.setVisibility(View.GONE);
                 isNewNote = false;
             }
         });
