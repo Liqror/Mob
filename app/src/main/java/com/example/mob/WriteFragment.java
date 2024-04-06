@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 
 public class WriteFragment extends Fragment {
@@ -29,22 +30,22 @@ public class WriteFragment extends Fragment {
         linedEditText = view.findViewById(R.id.edittxt_multilines);
         infLayout = view.findViewById(R.id.inf_layout);
 
-        // Найдите кнопку btn_re_1
-//        Button btnRe1 = view.findViewById(R.id.btn_re_1);
+        ImageButton btnRe1 = view.findViewById(R.id.btn_re_1);
+        btnRe1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Создаем экземпляр MapFragment
+                MapFragment mapFragment = new MapFragment();
+                Bundle args = new Bundle();
+                args.putInt(MapFragment.ARG_MODE, MapFragment.MODE_EDIT);
+                mapFragment.setArguments(args);
 
-        // Установите обработчик нажатия
-//        btnRe1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                // Создайте новый экземпляр NoteFragment
-//                MapFragment mapFragment = new MapFragment();
-//
-//                // Замените текущий фрагмент на NoteFragment
-//                if (getActivity() instanceof NewMainActivity) {
-//                    ((NewMainActivity) getActivity()).replaceFragment(mapFragment);
-//                }
-//            }
-//        });
+                // Заменяем текущий фрагмент на MapFragment
+                if (getActivity() instanceof NewMainActivity) {
+                    ((NewMainActivity) getActivity()).replaceFragment(mapFragment);
+                }
+            }
+        });
 
 
         // Добавляем слушатель для отслеживания видимости клавиатуры

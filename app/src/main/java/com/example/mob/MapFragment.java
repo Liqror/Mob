@@ -39,6 +39,12 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         // Инфлейтим layout для этого фрагмента
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
+        // Получаем режим из аргументов
+        Bundle args = getArguments();
+        if (args != null) {
+            currentMode = args.getInt(ARG_MODE, MODE_VIEW);
+        }
+
         // Получаем SupportMapFragment и уведомляем, когда карта готова к использованию.
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         if (mapFragment != null) {
@@ -52,13 +58,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        // Устанавливаем слушатель кликов по карте
-        mMap.setOnMapClickListener(this);
-
-        // Устанавливаем координаты перекрёстка
-        LatLng crossroads = new LatLng(47.249912481336494, 39.69719647988453);
-        // Добавляем маркер на карту
-        mMap.addMarker(new MarkerOptions().position(crossroads).title("Перекресток"));
+        /// Устанавливаем координаты перекрёстка в режиме просмотра
+        if (currentMode == MODE_VIEW) {
+            LatLng crossroads = new LatLng(47.249912481336494, 39.69719647988453);
+            mMap.addMarker(new MarkerOptions().position(crossroads).title("Перекресток"));
+        } else if (currentMode == MODE_EDIT) {
+            // Устанавливаем слушатель кликов по карте в режиме редактирования
+            mMap.setOnMapClickListener(this);
+        }
         // Включаем или выключаем отображение зданий
         mMap.setBuildingsEnabled(true);
         // Включаем или выключаем внутреннюю картографию
@@ -67,8 +74,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
 
     @Override
     public void onMapClick(LatLng point) {
+        // Действия при клике на карту в режиме редактирования
         new FetchAddressTask().execute(point);
     }
+
     private class FetchAddressTask extends AsyncTask<LatLng, Void, String> {
         private LatLng location; // Добавьте это поле
 
