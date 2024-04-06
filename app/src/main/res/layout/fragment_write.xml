@@ -63,6 +63,15 @@
 
             </LinearLayout>
 
+            <ImageButton
+                android:id="@+id/btn_re_1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/geo_layout"
+                android:layout_alignParentEnd="true"
+                android:background="@null"
+                android:src="@drawable/ic_note_re" />
+
 
             <TextView
                 android:id="@+id/geo_text"
@@ -70,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_below="@id/geo_layout"
-                android:text="Адрес"
+                android:text="-"
                 android:textColor="#FFFFFF"
                 android:textSize="25dp"
                 android:layout_marginLeft="10dp"/>
@@ -104,7 +113,7 @@
             </LinearLayout>
 
             <ImageButton
-                android:id="@+id/btn_re"
+                android:id="@+id/btn_re_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@id/weather_layout"

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.EditText;
 
 
@@ -27,6 +28,24 @@ public class WriteFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_write, container, false);
         linedEditText = view.findViewById(R.id.edittxt_multilines);
         infLayout = view.findViewById(R.id.inf_layout);
+
+        // Найдите кнопку btn_re_1
+//        Button btnRe1 = view.findViewById(R.id.btn_re_1);
+
+        // Установите обработчик нажатия
+//        btnRe1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                // Создайте новый экземпляр NoteFragment
+//                MapFragment mapFragment = new MapFragment();
+//
+//                // Замените текущий фрагмент на NoteFragment
+//                if (getActivity() instanceof NewMainActivity) {
+//                    ((NewMainActivity) getActivity()).replaceFragment(mapFragment);
+//                }
+//            }
+//        });
+
 
         // Добавляем слушатель для отслеживания видимости клавиатуры
         view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {

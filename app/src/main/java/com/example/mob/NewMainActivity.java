@@ -63,7 +63,14 @@ public class NewMainActivity extends AppCompatActivity {
         mapButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragment(new MapFragment());
+
+                MapFragment mapFragment = new MapFragment();
+                Bundle args = new Bundle();
+                args.putInt(MapFragment.ARG_MODE, MapFragment.MODE_VIEW);
+                mapFragment.setArguments(args);
+                replaceFragment(mapFragment);
+
+//                replaceFragment(new MapFragment());
                 titleTextView.setText(getString(R.string.title_map));
 
                 // Скрываем кнопку
@@ -100,7 +107,7 @@ public class NewMainActivity extends AppCompatActivity {
                 // Получаем текст из фрагмента WriteFragment
                 WriteFragment writeFragment = (WriteFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
                 String title = writeFragment.getEnteredText();
-                String location = "Адрес"; // Значение по умолчанию для location
+                String location = "-"; // Значение по умолчанию для location
 
                 // Сохраняем заметку в базу данных
                 DatabaseHelper dbHelper = new DatabaseHelper(NewMainActivity.this);
@@ -137,7 +144,7 @@ public class NewMainActivity extends AppCompatActivity {
 
 
     // Метод для замены фрагмента
-    private void replaceFragment(Fragment fragment) {
+    public void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);
@@ -147,7 +154,6 @@ public class NewMainActivity extends AppCompatActivity {
     public void hideButtonForWrite() {
         plusButton.setVisibility(View.GONE);
         backButton.setVisibility(View.VISIBLE);
-        // Скрыть другие кнопки по аналогии
     }
 
 
