@@ -22,6 +22,7 @@ public class NewMainActivity extends AppCompatActivity {
     private Button notesButton;
     private Button mapButton;
     private ImageButton plusButton;
+    private ImageButton tickButton;
     private ImageButton backButton;
     private boolean isNewNote = false; // Флаг для определения режима работы
     private int noteId;
@@ -37,6 +38,7 @@ public class NewMainActivity extends AppCompatActivity {
         mapButton = findViewById(R.id.map_button);
         plusButton = findViewById(R.id.btn_plus);
         backButton = findViewById(R.id.btn_back);
+        tickButton = findViewById(R.id.btn_tick);
         titleTextView = findViewById(R.id.title_map_note);
 
         // Установите начальный текст
@@ -47,6 +49,7 @@ public class NewMainActivity extends AppCompatActivity {
 
         // Скрываем кнопку
         backButton.setVisibility(View.GONE);
+        tickButton.setVisibility(View.GONE);
 
         // Обработчики нажатия на кнопки
         notesButton.setOnClickListener(new View.OnClickListener() {
@@ -78,6 +81,7 @@ public class NewMainActivity extends AppCompatActivity {
 
                 // Скрываем кнопку
                 backButton.setVisibility(View.GONE);
+                tickButton.setVisibility(View.GONE);
                 isNewNote = false;
             }
         });
@@ -96,6 +100,7 @@ public class NewMainActivity extends AppCompatActivity {
 
                 // Показываем кнопку при отображении фрагмента NoteFragment
                 backButton.setVisibility(View.VISIBLE);
+                tickButton.setVisibility(View.GONE);
                 isNewNote = true;
             }
         });
@@ -130,6 +135,7 @@ public class NewMainActivity extends AppCompatActivity {
 
                 // Скрываем кнопку
                 backButton.setVisibility(View.GONE);
+                tickButton.setVisibility(View.GONE);
             }
         });
     }
@@ -154,7 +160,13 @@ public class NewMainActivity extends AppCompatActivity {
     public void hideButtonForWrite() {
         plusButton.setVisibility(View.GONE);
         backButton.setVisibility(View.VISIBLE);
+        tickButton.setVisibility(View.GONE);
     }
 
+    public void hideButtonToMap() {
+        plusButton.setVisibility(View.GONE);
+        backButton.setVisibility(View.GONE);
+        tickButton.setVisibility(View.VISIBLE);
+    }
 
 }

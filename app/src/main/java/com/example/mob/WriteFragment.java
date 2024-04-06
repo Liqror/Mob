@@ -39,6 +39,10 @@ public class WriteFragment extends Fragment {
                 Bundle args = new Bundle();
                 args.putInt(MapFragment.ARG_MODE, MapFragment.MODE_EDIT);
                 mapFragment.setArguments(args);
+                // Получаем ссылку на MainActivity
+                NewMainActivity mainActivity = (NewMainActivity) getActivity();
+                // Скрываем кнопки в MainActivity
+                mainActivity.hideButtonToMap();
 
                 // Заменяем текущий фрагмент на MapFragment
                 if (getActivity() instanceof NewMainActivity) {
