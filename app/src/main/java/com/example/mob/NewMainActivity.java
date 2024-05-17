@@ -114,6 +114,7 @@ public class NewMainActivity extends AppCompatActivity {
                 WriteFragment writeFragment = (WriteFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
                 String title = writeFragment.getEnteredText();
                 String location = "-"; // Значение по умолчанию для location
+//                String location = writeFragment.
 
                 // Сохраняем заметку в базу данных
                 DatabaseHelper dbHelper = new DatabaseHelper(NewMainActivity.this);

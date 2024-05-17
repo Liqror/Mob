@@ -77,7 +77,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("title", title);
-        values.put("location", "Адрес");
+        values.put("location", location);
 
         long newRowId = db.insert("notes", null, values);
         return newRowId != -1;
