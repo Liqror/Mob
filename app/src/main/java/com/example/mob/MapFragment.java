@@ -65,19 +65,44 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        /// Устанавливаем координаты перекрёстка в режиме просмотра
+        /// Устанавливаем координаты из бд в режиме просмотра
         if (currentMode == MODE_VIEW) {
-            LatLng crossroads = new LatLng(47.249912481336494, 39.69719647988453);
-            mMap.addMarker(new MarkerOptions().position(crossroads).title("Перекресток"));
+//            LatLng crossroads = new LatLng(47.249912481336494, 39.69719647988453);
+//            mMap.addMarker(new MarkerOptions().position(crossroads).title("Перекресток"));
+            DatabaseHelper dbHelper = new DatabaseHelper(getContext());
+            List<Note> notes = dbHelper.getAllNotes();
+
+            for (Note note : notes) {
+                String location = note.getLocation();
+                if (!location.equals("-")) {
+                    LatLng coordinates = parseLocation(location);
+                    mMap.addMarker(new MarkerOptions().position(coordinates).title(note.getTitle()));
+                }
+//                LatLng coordinates = parseLocation(note.getLocation());
+//                mMap.addMarker(new MarkerOptions().position(coordinates).title(note.getTitle()));
+            }
         } else if (currentMode == MODE_EDIT) {
             // Устанавливаем слушатель кликов по карте в режиме редактирования
             mMap.setOnMapClickListener(this);
-//            Toast.makeText(getContext(), "ТОчка", Toast.LENGTH_SHORT).show();
         }
         // Включаем или выключаем отображение зданий
         mMap.setBuildingsEnabled(true);
         // Включаем или выключаем внутреннюю картографию
         mMap.setIndoorEnabled(true);
+    }
+
+    public LatLng parseLocation(String location) {
+        String[] lines = location.split("\n");
+        double latitude = 0;
+        double longitude = 0;
+        for (String line : lines) {
+            if (line.startsWith("Широта: ")) {
+                latitude = Double.parseDouble(line.replace("Широта: ", ""));
+            } else if (line.startsWith("Долгота: ")) {
+                longitude = Double.parseDouble(line.replace("Долгота: ", ""));
+            }
+        }
+        return new LatLng(latitude, longitude);
     }
 
     @Override

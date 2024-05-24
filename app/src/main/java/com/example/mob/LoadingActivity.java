@@ -26,6 +26,6 @@ public class LoadingActivity extends AppCompatActivity {
                 // Закройте LoadingActivity, чтобы пользователь не мог вернуться к нему, нажав кнопку Назад
                 finish();
             }
-        }, 100); // время задержки в миллисекундах
+        }, 3000); // время задержки в миллисекундах
     }
 }
