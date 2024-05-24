@@ -23,6 +23,9 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import java.util.Locale;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -53,25 +56,6 @@ public class WriteFragment extends Fragment {
         weatherText = view.findViewById(R.id.weather_text);
         ImageButton btnRe1 = view.findViewById(R.id.btn_re_1);
         ImageButton btnRe2 = view.findViewById(R.id.btn_re_2);
-
-        btnRe2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Пример строки noteLocation
-                String noteLocation = "Название: 9926 Svanvik, Норвегия\nШирота: 69.11699650145204\nДолгота: 28.89207322150469";
-
-                // Извлечь город из строки noteLocation
-                String cityName = extractCityName(noteLocation);
-
-                if (cityName != null) {
-                    getWeather(cityName);
-                } else {
-                    weatherText.setText("Не удалось определить город");
-                }
-            }
-        });
-
-
 
         // Добавляем слушатель для отслеживания видимости клавиатуры
         view.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
@@ -151,7 +135,55 @@ public class WriteFragment extends Fragment {
             }
         });
 
+        btnRe2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Пример строки noteLocation
+//                String noteLocation = "Название: 9926 Svanvik, Норвегия\nШирота: 69.11699650145204\nДолгота: 28.89207322150469";
+
+                // Извлечь широту и долготу из строки noteLocation
+                double latitude = extractLatitude(noteLocation);
+                double longitude = extractLongitude(noteLocation);
+
+                if (latitude != 0 && longitude != 0) {
+                    getWeather(latitude, longitude);
+                } else {
+                    weatherText.setText("Не удалось определить координаты");
+                }
+            }
+        });
+
         return view;
+    }
+
+    // Метод для извлечения широты из строки noteLocation
+    private double extractLatitude(String noteLocation) {
+        // Разделите строку по разделителю и извлеките широту
+        if (noteLocation.contains("Широта: ")) {
+            String[] parts = noteLocation.split("Широта: ");
+            if (parts.length > 1) {
+                String[] locationParts = parts[1].split("\n");
+                if (locationParts.length > 0) {
+                    return Double.parseDouble(locationParts[0]);
+                }
+            }
+        }
+        return 0;
+    }
+
+    // Метод для извлечения долготы из строки noteLocation
+    private double extractLongitude(String noteLocation) {
+        // Разделите строку по разделителю и извлеките долготу
+        if (noteLocation.contains("Долгота: ")) {
+            String[] parts = noteLocation.split("Долгота: ");
+            if (parts.length > 1) {
+                String[] locationParts = parts[1].split("\n");
+                if (locationParts.length > 0) {
+                    return Double.parseDouble(locationParts[0]);
+                }
+            }
+        }
+        return 0;
     }
 
     private String extractCityName(String noteLocation) {
@@ -168,10 +200,12 @@ public class WriteFragment extends Fragment {
         return null;
     }
 
-    private void getWeather(String cityName) {
+    // Метод для получения погоды по координатам
+    private void getWeather(double latitude, double longitude) {
         WeatherAPI weatherAPI = RetrofitClient.getClient("https://api.weatherapi.com/").create(WeatherAPI.class);
 
-        Call<WeatherResponse> call = weatherAPI.getCurrentWeather(API_KEY, cityName, "no");
+        String coordinates = String.format(Locale.ENGLISH, "%.4f,%.4f", latitude, longitude);
+        Call<WeatherResponse> call = weatherAPI.getCurrentWeather(API_KEY, coordinates, "no");
         call.enqueue(new Callback<WeatherResponse>() {
             @Override
             public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
@@ -180,7 +214,7 @@ public class WriteFragment extends Fragment {
                     double temperatureCelsius = weatherResponse.current.temp_c;
                     String conditionText = weatherResponse.current.condition.text;
 
-                    String result = String.format("%.1f°C, %s", temperatureCelsius, conditionText);
+                    String result = String.format(Locale.ENGLISH, "%.1f°C, %s", temperatureCelsius, conditionText);
                     weatherText.setText(result);
                 } else {
                     weatherText.setText("Ошибка получения данных о погоде");
@@ -193,6 +227,33 @@ public class WriteFragment extends Fragment {
             }
         });
     }
+
+
+//    private void getWeather(String cityName) {
+//        WeatherAPI weatherAPI = RetrofitClient.getClient("https://api.weatherapi.com/").create(WeatherAPI.class);
+//
+//        Call<WeatherResponse> call = weatherAPI.getCurrentWeather(API_KEY, cityName, "no");
+//        call.enqueue(new Callback<WeatherResponse>() {
+//            @Override
+//            public void onResponse(Call<WeatherResponse> call, Response<WeatherResponse> response) {
+//                if (response.isSuccessful() && response.body() != null) {
+//                    WeatherResponse weatherResponse = response.body();
+//                    double temperatureCelsius = weatherResponse.current.temp_c;
+//                    String conditionText = weatherResponse.current.condition.text;
+//
+//                    String result = String.format("%.1f°C, %s", temperatureCelsius, conditionText);
+//                    weatherText.setText(result);
+//                } else {
+//                    weatherText.setText("Ошибка получения данных о погоде");
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(Call<WeatherResponse> call, Throwable t) {
+//                weatherText.setText("Ошибка: " + t.getMessage());
+//            }
+//        });
+//    }
 
     // Метод для обработки изменений видимости клавиатуры
     private void onKeyboardVisibilityChanged(boolean opened) {
