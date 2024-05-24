@@ -17,12 +17,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.TextView;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import java.util.Locale;
 
@@ -141,14 +135,20 @@ public class WriteFragment extends Fragment {
                 // Пример строки noteLocation
 //                String noteLocation = "Название: 9926 Svanvik, Норвегия\nШирота: 69.11699650145204\nДолгота: 28.89207322150469";
 
-                // Извлечь широту и долготу из строки noteLocation
-                double latitude = extractLatitude(noteLocation);
-                double longitude = extractLongitude(noteLocation);
-
-                if (latitude != 0 && longitude != 0) {
-                    getWeather(latitude, longitude);
+                // Проверяем, что noteLocation не равно null или "-"
+                if (noteLocation == null || noteLocation.equals("-")) {
+                    // Если noteLocation равно null или "-", показываем сообщение
+                    Toast.makeText(getContext(), "Введите локацию и сохраните заметку", Toast.LENGTH_SHORT).show();
                 } else {
-                    weatherText.setText("Не удалось определить координаты");
+                    // Извлечь широту и долготу из строки noteLocation
+                    double latitude = extractLatitude(noteLocation);
+                    double longitude = extractLongitude(noteLocation);
+
+                    if (latitude != 0 && longitude != 0) {
+                        getWeather(latitude, longitude);
+                    } else {
+                        weatherText.setText("Не удалось определить координаты");
+                    }
                 }
             }
         });
