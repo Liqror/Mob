@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,11 +32,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
     private int currentMode = MODE_VIEW; // По умолчанию
     private MarkerOptions currentMarker;
     private GoogleMap mMap;
+    private int noteId;
+    String noteTitle;
 
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
         // Инфлейтим layout для этого фрагмента
         View view = inflater.inflate(R.layout.fragment_map, container, false);
 
@@ -43,6 +48,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         Bundle args = getArguments();
         if (args != null) {
             currentMode = args.getInt(ARG_MODE, MODE_VIEW);
+            noteId = args.getInt("note_id");
+            noteTitle = args.getString("note_title");
         }
 
         // Получаем SupportMapFragment и уведомляем, когда карта готова к использованию.
@@ -65,6 +72,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         } else if (currentMode == MODE_EDIT) {
             // Устанавливаем слушатель кликов по карте в режиме редактирования
             mMap.setOnMapClickListener(this);
+//            Toast.makeText(getContext(), "ТОчка", Toast.LENGTH_SHORT).show();
         }
         // Включаем или выключаем отображение зданий
         mMap.setBuildingsEnabled(true);
@@ -77,7 +85,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
         // Действия при клике на карту в режиме редактирования
         if (currentMarker != null) {
             mMap.clear(); // Удаляем все маркеры с карты
+
         }
+//        Toast.makeText(getContext(), "Функция", Toast.LENGTH_SHORT).show();
+
         new FetchAddressTask().execute(point);
     }
 
@@ -90,7 +101,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
             location = latLngs[0]; // Используйте это поле
             List<Address> addresses = null;
             String addressText = "";
-
             try {
                 addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1);
                 if (addresses != null && !addresses.isEmpty()) {
@@ -100,7 +110,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             return addressText;
         }
 
@@ -109,7 +118,35 @@ public class MapFragment extends Fragment implements OnMapReadyCallback, GoogleM
             if (!address.isEmpty()) {
                 currentMarker = new MarkerOptions().position(new LatLng(location.latitude, location.longitude)).title(address);
                 mMap.addMarker(currentMarker);}
+
+            // Внутри onPostExecute в FetchAddressTask, когда метка установлена и пользователь готов отправить данные
+//            if (dataSelectedListener != null) {
+//                dataSelectedListener.onDataSelected(address, location.latitude, location.longitude);
+//            }
         }
+    }
+
+    public interface OnDataSelectedListener {
+        void onDataSelected(int noteId, String noteTitle, String title, double latitude, double longitude);
+    }
+
+    private OnDataSelectedListener dataSelectedListener;
+
+    public void setDataSelectedListener(OnDataSelectedListener listener) {
+        this.dataSelectedListener = listener;
+    }
+
+    public void sendData() {
+        if (dataSelectedListener != null && currentMarker != null) {
+            String title = currentMarker.getTitle();
+            double latitude = currentMarker.getPosition().latitude;
+            double longitude = currentMarker.getPosition().longitude;
+            dataSelectedListener.onDataSelected(noteId, noteTitle, title, latitude, longitude);
+        }
+    }
+
+    public MarkerOptions getCurrentMarker() {
+        return currentMarker;
     }
 
 }

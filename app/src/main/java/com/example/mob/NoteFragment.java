@@ -57,7 +57,7 @@ public class NoteFragment extends Fragment {
                 Bundle bundle = new Bundle();
                 bundle.putInt("note_id", selectedNote.getId());
                 bundle.putString("note_title", selectedNote.getTitle());
-//                bundle.putString("note_location", selectedNote.getLocation());
+                bundle.putString("note_location", selectedNote.getLocation());
                 writeFragment.setArguments(bundle);
 
                 // Получаем ссылку на MainActivity

@@ -127,7 +127,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_below="@id/weather_layout"
-                android:text="+10, облачно"
+                android:text="-"
                 android:textColor="#FFFFFF"
                 android:textSize="25dp"
                 android:layout_marginLeft="10dp"/>

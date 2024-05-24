@@ -17,7 +17,7 @@ import android.widget.Toast;
 import java.util.List;
 
 
-public class NewMainActivity extends AppCompatActivity {
+public class NewMainActivity extends AppCompatActivity implements MapFragment.OnDataSelectedListener {
 
     private Button notesButton;
     private Button mapButton;
@@ -74,13 +74,15 @@ public class NewMainActivity extends AppCompatActivity {
                 mapFragment.setArguments(args);
                 replaceFragment(mapFragment);
 
-//                replaceFragment(new MapFragment());
+
+                // Устанавливаем слушатель для фрагмента
+                mapFragment.setDataSelectedListener(NewMainActivity.this);
+
+                replaceFragment(new MapFragment());
                 titleTextView.setText(getString(R.string.title_map));
 
                 // Скрываем кнопку
                 plusButton.setVisibility(View.GONE);
-
-                // Скрываем кнопку
                 backButton.setVisibility(View.GONE);
                 tickButton.setVisibility(View.GONE);
                 isNewNote = false;
@@ -98,7 +100,6 @@ public class NewMainActivity extends AppCompatActivity {
 
                 // Скрываем кнопку
                 plusButton.setVisibility(View.GONE);
-
                 // Показываем кнопку при отображении фрагмента NoteFragment
                 backButton.setVisibility(View.VISIBLE);
                 tickButton.setVisibility(View.GONE);
@@ -106,15 +107,13 @@ public class NewMainActivity extends AppCompatActivity {
             }
         });
 
-
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Получаем текст из фрагмента WriteFragment
                 WriteFragment writeFragment = (WriteFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
                 String title = writeFragment.getEnteredText();
-                String location = "-"; // Значение по умолчанию для location
-//                String location = writeFragment.
+                String location = writeFragment.getLocation(); // Значение по умолчанию для location
 
                 // Сохраняем заметку в базу данных
                 DatabaseHelper dbHelper = new DatabaseHelper(NewMainActivity.this);
@@ -131,6 +130,7 @@ public class NewMainActivity extends AppCompatActivity {
 
                 NoteFragment noteFragment = new NoteFragment();
                 replaceFragment(noteFragment);
+//                onBackPressed();
 
                 // Показываем кнопку при отображении фрагмента NoteFragment
                 plusButton.setVisibility(View.VISIBLE);
@@ -140,6 +140,26 @@ public class NewMainActivity extends AppCompatActivity {
                 tickButton.setVisibility(View.GONE);
             }
         });
+
+        tickButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Fragment currentFragment = getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+//                if (currentFragment instanceof MapFragment) {
+//                    ((MapFragment) currentFragment).sendData();
+//                }
+                if (currentFragment instanceof MapFragment) {
+                    MapFragment mapFragment = (MapFragment) currentFragment;
+                    if (mapFragment.getCurrentMarker() != null) {
+                        mapFragment.sendData();
+                    } else {
+                        // Оповестите пользователя о том, что необходимо выбрать точку на карте
+                        Toast.makeText(getApplicationContext(), "Выберите точку на карте", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
     }
 
     // Метод для получения значения переменной isNewNote
@@ -156,6 +176,7 @@ public class NewMainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragment_container, fragment);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 
@@ -169,6 +190,30 @@ public class NewMainActivity extends AppCompatActivity {
         plusButton.setVisibility(View.GONE);
         backButton.setVisibility(View.GONE);
         tickButton.setVisibility(View.VISIBLE);
+    }
+
+    // Метод реализации интерфейса OnDataSelectedListener из MapFragment
+    @Override
+    public void onDataSelected(int noteId, String noteTitle, String title, double latitude, double longitude) {
+//        int count = getSupportFragmentManager().getBackStackEntryCount();
+//        String aa = String.valueOf(count);
+//        Toast.makeText(this, aa, Toast.LENGTH_SHORT).show();
+//        int WriteFragmentId = getSupportFragmentManager().getBackStackEntryAt(count - 2).getId();
+//        WriteFragment writeFragment = (WriteFragment) getSupportFragmentManager().findFragmentById(WriteFragmentId);
+//        getSupportFragmentManager().popBackStack();
+//        WriteFragment writeFragment = new WriteFragment();
+//        replaceFragment(writeFragment);
+//        writeFragment.receiveData(noteId, noteTitle, title, latitude, longitude);
+
+        onBackPressed();
+        WriteFragment writeFragment = (WriteFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+        if (writeFragment != null) {
+            writeFragment.receiveData(noteId, noteTitle, title, latitude, longitude);
+            replaceFragment(writeFragment);
+        } else {
+            Toast.makeText(this, "WriteFragment not found", Toast.LENGTH_SHORT).show();
+        }
+        hideButtonForWrite();
     }
 
 }
